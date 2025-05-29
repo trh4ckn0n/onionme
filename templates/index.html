@@ -2,18 +2,53 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
     <title>OnionGen Web by TRHACKNON</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: #111;
+            color: #0f0;
+            font-family: monospace;
+            padding: 40px;
+        }
+        input, button {
+            background: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px;
+            margin-top: 10px;
+            width: 80%;
+        }
+        button:hover {
+            background: #0f0;
+            color: #000;
+            cursor: pointer;
+        }
+        .footer {
+            margin-top: 60px;
+            font-size: 0.9em;
+            color: #0f08;
+        }
+    </style>
 </head>
-<body style="background:#111;color:#0f0;font-family:monospace;padding:20px;">
-    <h1>🎯 Générateur d'adresses .onion par trhacknon</h1>
+<body>
+    <h1>🎯 Générateur d'adresses .onion</h1>
+    <p>par <strong style="color:#0ff;">trhacknon</strong></p>
+
     <form method="post">
-        <label>Préfixes (séparés par des espaces):</label><br>
-        <input type="text" name="prefixes" required style="width: 80%;"><br><br>
-        <label>Copier les clés après génération ?</label><br>
-        <input type="radio" name="copy" value="yes" checked> Oui
-        <input type="radio" name="copy" value="no"> Non<br><br>
-        <button type="submit">Lancer</button>
+        <label>Préfixes personnalisés (ex: <code>trkn hack lol</code>):</label><br>
+        <input type="text" name="prefixes" required><br>
+
+        <label>Copier les clés générées ?</label><br>
+        <label><input type="radio" name="copy" value="yes" checked> Oui</label>
+        <label><input type="radio" name="copy" value="no"> Non</label><br><br>
+
+        <button type="submit">🚀 Lancer la génération</button>
     </form>
+
+    <div class="footer">
+        <hr>
+        🛠️ Projet éducatif par <span style="color:#0ff;">trhacknon</span> – style fluo terminal 💻
+    </div>
 </body>
 </html>
