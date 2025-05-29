@@ -9,7 +9,7 @@ results = {}
 def generate_onion(prefix):
     try:
         result = subprocess.run(["oniongen", f"^{prefix}", "5"], capture_output=True)
-        output = result.stdout.decode().strip()
+        output = result.stdout.decode(errors='ignore').strip()
 
         if output:
             onion_address = output.split("\n")[0]
