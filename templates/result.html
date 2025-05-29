@@ -1,16 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <title>Résultats - onionme by trhacknon</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: #111;
+            color: #0f0;
+            font-family: monospace;
+            padding: 40px;
+        }
+        .onion-block {
+            border: 1px dashed #0f0;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #0ff;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ff0;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: #0f08;
+        }
+    </style>
 </head>
-<body style="background:#111;color:#0f0;font-family:monospace;padding:20px;">
-    <h2>Résultats - onionme by trhacknon</h2>
-    {% for prefix, result in results.items() %}
-        <p><strong>{{ prefix }}:</strong> {{ result }}</p>
+<body>
+    <h2>📦 Résultats - Génération .onion par <span style="color:#0ff;">trhacknon</span></h2>
+
+    {% for prefix, data in results.items() %}
+        <div class="onion-block">
+            <p><strong>🎯 Prefix :</strong> {{ prefix }}</p>
+            {% if data.error %}
+                <p style="color: red;"><strong>Erreur :</strong> {{ data.error }}</p>
+            {% else %}
+                <p><strong>🔗 Adresse .onion :</strong> {{ data.onion }}</p>
+                <p>📁 <a href="{{ url_for('download_key', onion=data.onion, filename='hostname') }}">Télécharger hostname</a></p>
+                <p>🔑 <a href="{{ url_for('download_key', onion=data.onion, filename='hs_ed25519_public_key') }}">Télécharger clé publique</a></p>
+                <p>🔐 <a href="{{ url_for('download_key', onion=data.onion, filename='hs_ed25519_secret_key') }}">Télécharger clé secrète</a></p>
+                <hr>
+            {% endif %}
+        </div>
     {% endfor %}
-    <br>
-    <a href="{{ url_for('index') }}">↩ Revenir</a>
+
+    <a href="{{ url_for('index') }}">↩ Revenir à l'accueil</a>
+
+    <div class="footer">
+        <hr>
+        🔒 Propulsé par <span style="color:#0ff;">trhacknon</span> – Utilisation pédagogique uniquement.
+    </div>
 </body>
 </html>
