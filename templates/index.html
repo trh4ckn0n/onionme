@@ -36,15 +36,18 @@
     <p>par <strong style="color:#0ff;">trhacknon</strong></p>
 
     <form method="post">
-        <label>Préfixes personnalisés (ex: <code>trkn hack lol</code>):</label><br>
-        <input type="text" name="prefixes" required><br>
+    <label>Préfixes personnalisés (ex: <code>trkn hack lol</code>):</label><br>
+    <input type="text" name="prefixes" required><br><br>
 
-        <label>Copier les clés générées ?</label><br>
-        <label><input type="radio" name="copy" value="yes" checked> Oui</label>
-        <label><input type="radio" name="copy" value="no"> Non</label><br><br>
+    <label>Copier les clés générées ?</label><br>
+    <input type="radio" id="copy_yes" name="copy" value="yes" checked>
+    <label for="copy_yes" style="cursor:pointer; margin-right: 20px;">Oui</label>
 
-        <button type="submit">🚀 Lancer la génération</button>
-    </form>
+    <input type="radio" id="copy_no" name="copy" value="no">
+    <label for="copy_no" style="cursor:pointer;">Non</label><br><br>
+
+    <button type="submit">🚀 Lancer la génération</button>
+</form>
 
     <div class="footer">
         <hr>
