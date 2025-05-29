@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultats - onionme by trhacknon</title>
+</head>
+<body style="background:#111;color:#0f0;font-family:monospace;padding:20px;">
+    <h2>Résultats - onionme by trhacknon</h2>
+    {% for prefix, result in results.items() %}
+        <p><strong>{{ prefix }}:</strong> {{ result }}</p>
+    {% endfor %}
+    <br>
+    <a href="{{ url_for('index') }}">↩ Revenir</a>
+</body>
+</html>
