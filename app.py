@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import subprocess
 import threading
 
@@ -25,6 +25,7 @@ def index():
 
         threads = []
         results.clear()
+
         for prefix in prefixes:
             thread = threading.Thread(target=generate_onion, args=(prefix,))
             thread.start()
@@ -33,9 +34,10 @@ def index():
         for thread in threads:
             thread.join()
 
-        # copie conditionnelle des clés
+        # Exécuter cpkey.py si option "copier" cochée
         if copy_choice == 'yes':
             subprocess.run(["python3", "cpkey.py"])
 
         return render_template('result.html', results=results)
+
     return render_template('index.html')
