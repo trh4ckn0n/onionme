@@ -97,7 +97,7 @@
             <p><strong>🎯 Prefix :</strong> <code>{{ prefix }}</code></p>
 
             {% if data.error %}
-                <p class="error">❌ Erreur : {{ data.error }}</p>
+    <p class="error">❌ Erreur : {{ data.error | safe }}</p>
             {% else %}
                 <p><strong>🔗 Adresse .onion :</strong> <code>{{ data.onion }}</code></p>
                 <ul>
