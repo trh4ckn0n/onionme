@@ -1,57 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Générateur de domaines .onion</title>
-    <style>
-        body {
-            background-color: #111;
-            color: #0f0;
-            font-family: monospace;
-            padding: 20px;
-        }
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            background: #222;
-            color: #0f0;
-            border: 1px solid #0f0;
-        }
-        button {
-            background: #0f0;
-            color: #111;
-            border: none;
-            padding: 10px 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0c0;
-        }
-        .warning {
-            background: #222;
-            border-left: 4px solid #f00;
-            padding: 10px;
-            margin-top: 20px;
-            color: #f55;
-        }
-        a {
-            color: #0ff;
-        }
-    </style>
+  <title>Générateur de domaines .onion</title>
+  <style>
+    body { background-color: #0d0d0d; color: #39ff14; font-family: monospace; text-align: center; }
+    input, button { padding: 10px; font-size: 16px; background: black; color: #39ff14; border: 1px solid #39ff14; margin-top: 10px; }
+    h1 { color: #39ff14; }
+  </style>
 </head>
 <body>
-    <h1>🌐 Générateur de domaines .onion</h1>
-    <form method="POST" action="/generate">
-        <label for="prefix">Préfixe(s) (séparés par un espace) :</label><br>
-        <input type="text" name="prefix" id="prefix" placeholder="ex: trhacknon " required>
-        <br>
-        <button type="submit">Générer</button>
-    </form>
-
-    <div class="warning">
-        ⚠️ Ce projet nécessite <strong><a href="https://github.com/trh4ckn0n/oniongen-go" target="_blank">oniongen-go</a></strong> pour générer des domaines Tor v3 valides (56 caractères).
-    </div>
+  <h1>🌐 Générateur de domaines .onion</h1>
+  <form method="POST" action="/generate">
+    <label for="prefix">Préfixe(s) souhaité(s) :</label><br>
+    <input type="text" name="prefix" id="prefix" placeholder="Ex: trhacknon test autre"><br>
+    <button type="submit">Générer</button>
+  </form>
 </body>
 </html>
