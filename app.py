@@ -22,20 +22,24 @@ def generate_onion(prefix):
         output = result.stdout.decode('utf-8', errors='replace').strip()
 
         if output:
-            onion_address = output.split("\n")[0].strip()
-            onion_dir = onion_address
+            folder_name = output.split("\n")[0].strip()
+            hostname_path = os.path.join(folder_name, "hostname")
+            pubkey_path = os.path.join(folder_name, "hs_ed25519_public_key")
+            seckey_path = os.path.join(folder_name, "hs_ed25519_secret_key")
 
-            hostname_path = os.path.join(onion_dir, "hostname")
-            pubkey_path = os.path.join(onion_dir, "hs_ed25519_public_key")
-            seckey_path = os.path.join(onion_dir, "hs_ed25519_secret_key")
+            # 🔥 Lire le domaine .onion en clair
+            if os.path.exists(hostname_path):
+                with open(hostname_path, "r") as f:
+                    domain_onion = f.read().strip()
+            else:
+                domain_onion = "non trouvé"
 
-            hostname = read_file_base64(hostname_path)
             pubkey = read_file_base64(pubkey_path)
             seckey = read_file_base64(seckey_path)
 
             results[prefix] = {
-                "onion": onion_address,
-                "hostname": hostname,
+                "onion": domain_onion,
+                "hostname": read_file_base64(hostname_path),  # version base64
                 "public_key": pubkey,
                 "secret_key": seckey
             }
@@ -43,7 +47,7 @@ def generate_onion(prefix):
             results[prefix] = {"error": "Aucune adresse générée"}
     except Exception as e:
         results[prefix] = {"error": str(e)}
-
+        
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
