@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Résultats</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #0f0;
-            font-family: monospace;
-            padding: 20px;
-        }
-        .result {
-            border: 1px solid #0f0;
-            padding: 10px;
-            margin-bottom: 20px;
-            background-color: #111;
-        }
-        .invalid {
-            border: 1px solid #f00;
-            color: #f55;
-        }
-        h2 {
-            color: #0ff;
-        }
-        a {
-            color: #ff0;
-        }
-    </style>
+  <title>Résultats</title>
+  <style>
+    body { background-color: #0d0d0d; color: #39ff14; font-family: monospace; padding: 20px; }
+    .card {
+      border: 1px solid #39ff14;
+      padding: 10px;
+      margin-bottom: 15px;
+      background-color: #1a1a1a;
+    }
+    .invalid { color: orange; }
+    a { color: #00ffff; }
+  </style>
 </head>
 <body>
-    <h1>📄 Résultats de génération</h1>
-    {% for name, data in results.items() %}
-    <div class="result {% if not data.valid %}invalid{% endif %}">
-        <h2>{{ data.onion }}</h2>
-        <p><strong>Préfixe :</strong> {{ data.prefix }}</p>
-        <p><strong>Hostname :</strong> {{ data.hostname }}</p>
-        <p><strong>Clé publique :</strong> {{ data.public_key }}</p>
-        <p><strong>Clé secrète :</strong> {{ data.secret_key }}</p>
-        {% if data.valid %}
+  <h1>📄 Résultats de génération</h1>
+  {% for key, info in results.items() %}
+    <div class="card">
+      <h2>{% if info.valid %}[Valide]{% else %}<span class="invalid">[Invalide]</span>{% endif %} {{ info.onion }}</h2>
+      <p><strong>Préfixe :</strong> {{ info.prefix }}</p>
+      <p><strong>Hostname :</strong> {{ info.hostname }}</p>
+      <p><strong>Clé publique :</strong> {{ info.public_key }}</p>
+      <p><strong>Clé secrète :</strong> {{ info.secret_key }}</p>
+      {% if info.valid %}
         <p>
-            📥 <a href="/download/{{ data.folder }}/hostname">Hostname</a> |
-            <a href="/download/{{ data.folder }}/hs_ed25519_public_key">Public Key</a> |
-            <a href="/download/{{ data.folder }}/hs_ed25519_secret_key">Secret Key</a>
+          📥 <a href="/download/{{ info.folder }}/hostname">hostname</a> |
+          <a href="/download/{{ info.folder }}/hs_ed25519_public_key">public key</a> |
+          <a href="/download/{{ info.folder }}/hs_ed25519_secret_key">secret key</a>
         </p>
-        {% else %}
+      {% else %}
         <p>⚠️ Domaine non valide (longueur ≠ 56 caractères)</p>
-        {% endif %}
+      {% endif %}
     </div>
-    {% endfor %}
+  {% endfor %}
 </body>
 </html>
