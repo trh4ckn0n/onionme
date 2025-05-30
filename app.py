@@ -11,7 +11,7 @@ app = Flask(__name__)
 results = {}
 
 # Création du dossier oniongen si n'existe pas
-os.makedirs("oniongen", exist_ok=True)
+os.makedirs("oniondom", exist_ok=True)
 
 # Fonction pour lire le fichier en texte brut ou base64 si nécessaire
 def read_text_or_base64(path):
