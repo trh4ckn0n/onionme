@@ -2,27 +2,36 @@ from flask import Flask, render_template, request, send_from_directory
 import subprocess
 import threading
 import os
+import base64
 
 app = Flask(__name__)
 results = {}
 
+def read_file_base64(path):
+    if os.path.exists(path):
+        with open(path, "rb") as f:
+            data = f.read()
+        return base64.b64encode(data).decode('ascii')
+    else:
+        return "Non trouvé"
+
 def generate_onion(prefix):
     try:
+        # Lance oniongen, filtre par prefix, 5 résultats
         result = subprocess.run(["oniongen", f"^{prefix}", "5"], capture_output=True)
         output = result.stdout.decode('utf-8', errors='replace').strip()
 
         if output:
-            onion_address = output.split("\n")[0]
+            onion_address = output.split("\n")[0].strip()
             onion_dir = onion_address
 
-            # Fichiers générés
             hostname_path = os.path.join(onion_dir, "hostname")
             pubkey_path = os.path.join(onion_dir, "hs_ed25519_public_key")
             seckey_path = os.path.join(onion_dir, "hs_ed25519_secret_key")
 
-            hostname = open(hostname_path).read().strip() if os.path.exists(hostname_path) else "Non trouvé"
-            pubkey = open(pubkey_path).read().strip() if os.path.exists(pubkey_path) else "Non trouvé"
-            seckey = open(seckey_path).read().strip() if os.path.exists(seckey_path) else "Non trouvé"
+            hostname = read_file_base64(hostname_path)
+            pubkey = read_file_base64(pubkey_path)
+            seckey = read_file_base64(seckey_path)
 
             results[prefix] = {
                 "onion": onion_address,
@@ -59,15 +68,10 @@ def index():
 
     return render_template('index.html')
 
-# Route pour télécharger un fichier de clé
 @app.route('/download/<onion>/<filename>')
 def download_key(onion, filename):
     directory = os.path.join(os.getcwd(), onion)
     return send_from_directory(directory, filename, as_attachment=True)
 
-# Lancement
-def main():
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
 if __name__ == '__main__':
-    main()
+    app.run(debug=True, host='0.0.0.0', port=5000)
