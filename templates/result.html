@@ -1,61 +1,52 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Résultats .onion – trhacknon</title>
-    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/torbirdy.svg" />
+    <title>Résultats</title>
     <style>
         body {
-            background-color: #0b0b0b;
-            color: #00ff88;
+            background-color: #000;
+            color: #0f0;
             font-family: monospace;
-            padding: 30px;
-        }
-        .onion-block {
-            border: 1px solid #00ff88;
-            background-color: #111;
-            border-radius: 10px;
             padding: 20px;
+        }
+        .result {
+            border: 1px solid #0f0;
+            padding: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 0 15px #00ff8855;
+            background-color: #111;
+        }
+        .invalid {
+            border: 1px solid #f00;
+            color: #f55;
+        }
+        h2 {
+            color: #0ff;
         }
         a {
-            color: #0ff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .title {
-            color: #00ccaa;
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        code {
-            display: block;
-            margin: 10px 0;
-            color: #fff;
-        }
-        .logo {
-            width: 60px;
-            margin-bottom: 20px;
+            color: #ff0;
         }
     </style>
 </head>
 <body>
-    <img class="logo" src="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/torbirdy.svg" alt="Tor Logo" />
-    <h1>🧅 Résultats de génération .onion</h1>
+    <h1>📄 Résultats de génération</h1>
     {% for name, data in results.items() %}
-        <div class="onion-block">
-            <div class="title">Préfixe : {{ data.prefix }}</div>
-            <div>🌐 Domaine : <code>{{ data.onion }}</code></div>
-            <div>
-                📥 <a href="/download/{{ data.folder }}/hostname">hostname</a> |
-                <a href="/download/{{ data.folder }}/hs_ed25519_public_key">public_key</a> |
-                <a href="/download/{{ data.folder }}/hs_ed25519_secret_key">secret_key</a>
-            </div>
-        </div>
+    <div class="result {% if not data.valid %}invalid{% endif %}">
+        <h2>{{ data.onion }}</h2>
+        <p><strong>Préfixe :</strong> {{ data.prefix }}</p>
+        <p><strong>Hostname :</strong> {{ data.hostname }}</p>
+        <p><strong>Clé publique :</strong> {{ data.public_key }}</p>
+        <p><strong>Clé secrète :</strong> {{ data.secret_key }}</p>
+        {% if data.valid %}
+        <p>
+            📥 <a href="/download/{{ data.folder }}/hostname">Hostname</a> |
+            <a href="/download/{{ data.folder }}/hs_ed25519_public_key">Public Key</a> |
+            <a href="/download/{{ data.folder }}/hs_ed25519_secret_key">Secret Key</a>
+        </p>
+        {% else %}
+        <p>⚠️ Domaine non valide (longueur ≠ 56 caractères)</p>
+        {% endif %}
+    </div>
     {% endfor %}
 </body>
 </html>
