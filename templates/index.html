@@ -48,11 +48,6 @@
             margin-bottom: 20px;
             box-sizing: border-box;
         }
-        input[type="checkbox"] {
-            margin-right: 10px;
-            transform: scale(1.2);
-            vertical-align: middle;
-        }
         button {
             width: 100%;
             padding: 14px 0;
@@ -74,23 +69,13 @@
             font-size: 0.85em;
             color: #00ff8866;
         }
-        a {
-            color: #00ff88;
-            text-decoration: none;
-            font-weight: 700;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
     <form method="post" action="/generate">
         <h1>Génération .onion <span style="color:#0ff;">trhacknon</span></h1>
-        <label for="prefixes">Préfixes à générer (séparés par espace) :</label>
-        <input type="text" id="prefixes" name="prefixes" placeholder="ex: trkn abc def" required autofocus />
-
-        <label><input type="checkbox" name="copy" value="yes" /> Copier les clés (cpkey.py)</label>
+        <label for="prefix">Préfixes à générer (séparés par espace) :</label>
+        <input type="text" id="prefix" name="prefix" placeholder="ex: trkn abc def" required autofocus />
 
         <button type="submit">Générer</button>
 
