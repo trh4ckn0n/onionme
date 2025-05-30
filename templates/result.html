@@ -120,21 +120,20 @@
     {% else %}
       <p>✅ Domaine .onion : <strong>{{ result.onion }}</strong></p>
 
-      <h4>📄 hostname (base64)</h4>
-      <pre>{{ result.hostname_b64 }}</pre>
-      <a href="/download/{{ result.folder }}/hostname" class="btn">⬇️ Télécharger hostname</a>
+      <h4>📄 hostname (contenu brut)</h4>
+      <pre>{{ result.hostname }}</pre>
+      <a href="/download/{{ result.folder }}/hostname">⬇️ Télécharger hostname</a>
 
-      <h4>🔑 Public Key (base64)</h4>
-      <pre>{{ result.public_key_b64 }}</pre>
-      <a href="/download/{{ result.folder }}/hs_ed25519_public_key" class="btn">⬇️ Télécharger public key</a>
+      <h4>🔑 Public Key (contenu brut)</h4>
+      <pre>{{ result.public_key }}</pre>
+      <a href="/download/{{ result.folder }}/hs_ed25519_public_key">⬇️ Télécharger public key</a>
 
       <h4>🔐 Secret Key (base64)</h4>
       <pre>{{ result.secret_key_b64 }}</pre>
-      <a href="/download/{{ result.folder }}/hs_ed25519_secret_key" class="btn">⬇️ Télécharger secret key</a>
+      <a href="/download/{{ result.folder }}/hs_ed25519_secret_key">⬇️ Télécharger secret key</a>
     {% endif %}
   </div>
 {% endfor %}
-
     <a href="/" class="back-link">🔙 Retour</a>
 
     <div class="footer">
