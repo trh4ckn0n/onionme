@@ -40,7 +40,7 @@ def read_file_base64(path):
 # Générer un domaine .onion avec un préfixe
 def generate_onion(prefix):
     folder_name = "trkn" + base64.b64encode(os.urandom(8)).decode("utf-8").lower().replace("=", "").replace("/", "").replace("+", "")
-    folder_path = os.path.join("oniongen", folder_name)
+    folder_path = os.path.join("oniondom", folder_name)
     os.makedirs(folder_path, exist_ok=True)
 
     # Simule la génération Tor (exemple seulement)
@@ -84,7 +84,7 @@ def result():
 
 @app.route("/download/<path:folder>/<filename>")
 def download(folder, filename):
-    folder_path = os.path.join("oniongen", folder)
+    folder_path = os.path.join("oniondom", folder)
     return send_from_directory(folder_path, filename, as_attachment=True)
 
 if __name__ == "__main__":
