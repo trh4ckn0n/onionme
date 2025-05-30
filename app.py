@@ -32,7 +32,7 @@ def generate_onion(prefix):
         os.makedirs(folder_path, exist_ok=True)
 
         # Lancer oniongen-go avec le préfixe et le dossier de destination
-        subprocess.run(["./oniongen-go", "-prefix", prefix, "-dir", folder_path], check=True)
+        subprocess.run(["./oniongen", "-prefix", prefix, "-dir", folder_path], check=True)
 
         hostname_path = os.path.join(folder_path, "hostname")
         pubkey_path = os.path.join(folder_path, "hs_ed25519_public_key")
