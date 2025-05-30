@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Génération .onion – trhacknon</title>
+    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/carml-logo.svg" />
     <style>
         body {
             background: #0b0b0b;
@@ -13,6 +14,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
         form {
             background: #111;
@@ -69,9 +71,19 @@
             font-size: 0.85em;
             color: #00ff8866;
         }
+        .logo {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+        .illustration {
+            width: 160px;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
+    <img class="logo" src="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/tor.svg" alt="Logo Tor" />
     <form method="post" action="/generate">
         <h1>Génération .onion <span style="color:#0ff;">trhacknon</span></h1>
         <label for="prefix">Préfixes à générer (séparés par espace) :</label>
@@ -83,5 +95,6 @@
             🔒 Propulsé par <span style="color:#0ff;">trhacknon</span> – Usage pédagogique uniquement.
         </div>
     </form>
+    <img class="illustration" src="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/torbirdy.svg" alt="Illustration Tor" />
 </body>
 </html>
