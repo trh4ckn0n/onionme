@@ -2,58 +2,53 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Résultats - Génération .onion par trhacknon</title>
+    <title>Résultats .onion – trhacknon</title>
     <style>
         body {
-            background-color: #111;
-            color: #eee;
+            background-color: #0b0b0b;
+            color: #00ff88;
             font-family: monospace;
-            padding: 20px;
+            padding: 30px;
         }
-        h1, h2, h3 {
-            color: #00ffcc;
-        }
-        .onion-result {
-            border: 1px solid #444;
-            padding: 15px;
-            margin-bottom: 30px;
+        .onion-block {
+            border: 1px solid #00ff88;
+            background-color: #111;
             border-radius: 10px;
-            background-color: #1a1a1a;
-        }
-        pre {
-            background-color: #222;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px #00ff8855;
         }
         a {
-            color: #00ffcc;
+            color: #0ff;
             text-decoration: none;
-            margin-left: 10px;
         }
-        .label {
-            color: #7fffd4;
+        a:hover {
+            text-decoration: underline;
+        }
+        .title {
+            color: #00ccaa;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        code {
+            display: block;
+            margin: 10px 0;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <h1>📦 Résultats - Génération .onion par <strong>trhacknon</strong></h1>
-
-    {% for result in results.values() %}
-        <div class="onion-result">
-            <h2>🎯 Domaine .onion : <span class="label">{{ result.onion }}</span></h2>
-
-            <h3>📄 hostname :</h3>
-            <pre>{{ result.hostname }}</pre>
-            <a href="/download/{{ result.folder }}/hostname">⬇️ Télécharger hostname</a>
-
-            <h3>🔑 Public Key :</h3>
-            <pre>{{ result.public_key }}</pre>
-            <a href="/download/{{ result.folder }}/hs_ed25519_public_key">⬇️ Télécharger public key</a>
-
-            <h3>🔐 Secret Key :</h3>
-            <pre>{{ result.secret_key }}</pre>
-            <a href="/download/{{ result.folder }}/hs_ed25519_secret_key">⬇️ Télécharger secret key</a>
+    <h1>🧅 Résultats de génération .onion</h1>
+    {% for name, data in results.items() %}
+        <div class="onion-block">
+            <div class="title">Préfixe : {{ data.prefix }}</div>
+            <div>🌐 Domaine : <code>{{ data.onion }}</code></div>
+            <div>
+                📥 <a href="/download/{{ data.folder }}/hostname">hostname</a> |
+                <a href="/download/{{ data.folder }}/hs_ed25519_public_key">public_key</a> |
+                <a href="/download/{{ data.folder }}/hs_ed25519_secret_key">secret_key</a>
+            </div>
         </div>
     {% endfor %}
 </body>
