@@ -2,16 +2,13 @@ from flask import Flask, render_template, request, redirect, send_from_directory
 import os
 import base64
 import string
+import subprocess
 
 app = Flask(__name__)
-
-# Stockage des résultats
 results = {}
 
-# Créer le dossier oniondom s'il n'existe pas
 os.makedirs("oniondom", exist_ok=True)
 
-# Lire contenu texte ou base64
 def read_text_or_base64(path):
     try:
         with open(path, "r") as f:
@@ -19,7 +16,7 @@ def read_text_or_base64(path):
             if all(c in string.printable for c in content):
                 return content
             else:
-                raise ValueError("Non imprimable")
+                raise ValueError("Non printable")
     except:
         try:
             with open(path, "rb") as f:
@@ -27,43 +24,50 @@ def read_text_or_base64(path):
         except:
             return "Non disponible"
 
-# Générer un domaine .onion avec préfixe
 def generate_onion(prefix):
-    folder_name = "trkn" + base64.b64encode(os.urandom(8)).decode("utf-8").lower().replace("=", "").replace("/", "").replace("+", "")
-    folder_path = os.path.join("oniondom", folder_name)
-    os.makedirs(folder_path, exist_ok=True)
+    try:
+        # Chemin du dossier de destination
+        folder_name = "trkn" + base64.b32encode(os.urandom(5)).decode("utf-8").lower().strip("=")
+        folder_path = os.path.join("oniondom", folder_name)
+        os.makedirs(folder_path, exist_ok=True)
 
-    hostname_path = os.path.join(folder_path, "hostname")
-    pubkey_path = os.path.join(folder_path, "hs_ed25519_public_key")
-    seckey_path = os.path.join(folder_path, "hs_ed25519_secret_key")
+        # Lancer oniongen-go avec le préfixe et le dossier de destination
+        subprocess.run(["./oniongen-go", "-prefix", prefix, "-dir", folder_path], check=True)
 
-    onion = prefix + base64.b32encode(os.urandom(16)).decode("utf-8").lower().strip("=") + ".onion"
-    onion_core = onion.replace(".onion", "")
+        hostname_path = os.path.join(folder_path, "hostname")
+        pubkey_path = os.path.join(folder_path, "hs_ed25519_public_key")
+        seckey_path = os.path.join(folder_path, "hs_ed25519_secret_key")
 
-    with open(hostname_path, "w") as f:
-        f.write(onion + "\n")
-    with open(pubkey_path, "wb") as f:
-        f.write(b"== ed25519v1-public: type0 ==\n" + os.urandom(32))
-    with open(seckey_path, "wb") as f:
-        f.write(b"== ed25519v1-secret: type0 ==\n" + os.urandom(64))
+        onion = read_text_or_base64(hostname_path)
+        onion_core = onion.replace(".onion", "")
 
-    # Vérifie si le domaine est valide (56 caractères hors .onion)
-    if len(onion_core) == 56:
+        if len(onion_core) == 56:
+            results[folder_name] = {
+                "onion": onion,
+                "hostname": onion,
+                "public_key": read_text_or_base64(pubkey_path),
+                "secret_key": read_text_or_base64(seckey_path),
+                "folder": folder_name,
+                "prefix": prefix,
+                "valid": True
+            }
+        else:
+            results[folder_name] = {
+                "onion": onion,
+                "hostname": "Erreur : domaine invalide (longueur incorrecte)",
+                "public_key": "Non généré",
+                "secret_key": "Non généré",
+                "folder": folder_name,
+                "prefix": prefix,
+                "valid": False
+            }
+
+    except Exception as e:
         results[folder_name] = {
-            "onion": onion,
-            "hostname": read_text_or_base64(hostname_path),
-            "public_key": read_text_or_base64(pubkey_path),
-            "secret_key": read_text_or_base64(seckey_path),
-            "folder": folder_name,
-            "prefix": prefix,
-            "valid": True
-        }
-    else:
-        results[folder_name] = {
-            "onion": f"[Invalide] {onion}",
-            "hostname": "Erreur : domaine invalide (longueur incorrecte)",
-            "public_key": "Non généré",
-            "secret_key": "Non généré",
+            "onion": "Erreur lors de la génération",
+            "hostname": str(e),
+            "public_key": "Non disponible",
+            "secret_key": "Non disponible",
             "folder": folder_name,
             "prefix": prefix,
             "valid": False
