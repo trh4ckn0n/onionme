@@ -5,13 +5,13 @@ import string
 
 app = Flask(__name__)
 
-# Stocker tous les résultats
+# Stockage des résultats
 results = {}
 
-# Création du dossier oniondom si n'existe pas
+# Créer le dossier oniondom s'il n'existe pas
 os.makedirs("oniondom", exist_ok=True)
 
-# Lire fichier texte ou base64
+# Lire contenu texte ou base64
 def read_text_or_base64(path):
     try:
         with open(path, "r") as f:
@@ -27,7 +27,7 @@ def read_text_or_base64(path):
         except:
             return "Non disponible"
 
-# Générer un domaine .onion avec un préfixe donné
+# Générer un domaine .onion avec préfixe
 def generate_onion(prefix):
     folder_name = "trkn" + base64.b64encode(os.urandom(8)).decode("utf-8").lower().replace("=", "").replace("/", "").replace("+", "")
     folder_path = os.path.join("oniondom", folder_name)
@@ -38,6 +38,7 @@ def generate_onion(prefix):
     seckey_path = os.path.join(folder_path, "hs_ed25519_secret_key")
 
     onion = prefix + base64.b32encode(os.urandom(16)).decode("utf-8").lower().strip("=") + ".onion"
+    onion_core = onion.replace(".onion", "")
 
     with open(hostname_path, "w") as f:
         f.write(onion + "\n")
@@ -46,14 +47,27 @@ def generate_onion(prefix):
     with open(seckey_path, "wb") as f:
         f.write(b"== ed25519v1-secret: type0 ==\n" + os.urandom(64))
 
-    results[folder_name] = {
-        "onion": onion,
-        "hostname": read_text_or_base64(hostname_path),
-        "public_key": read_text_or_base64(pubkey_path),
-        "secret_key": read_text_or_base64(seckey_path),
-        "folder": folder_name,
-        "prefix": prefix
-    }
+    # Vérifie si le domaine est valide (56 caractères hors .onion)
+    if len(onion_core) == 56:
+        results[folder_name] = {
+            "onion": onion,
+            "hostname": read_text_or_base64(hostname_path),
+            "public_key": read_text_or_base64(pubkey_path),
+            "secret_key": read_text_or_base64(seckey_path),
+            "folder": folder_name,
+            "prefix": prefix,
+            "valid": True
+        }
+    else:
+        results[folder_name] = {
+            "onion": f"[Invalide] {onion}",
+            "hostname": "Erreur : domaine invalide (longueur incorrecte)",
+            "public_key": "Non généré",
+            "secret_key": "Non généré",
+            "folder": folder_name,
+            "prefix": prefix,
+            "valid": False
+        }
 
 @app.route("/")
 def index():
