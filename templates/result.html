@@ -1,143 +1,90 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <title>Résultats .onion – trhacknon</title>
+    <meta charset="UTF-8">
+    <title>Résultats - Génération .onion par trhacknon</title>
     <style>
         body {
-            background: #0b0b0b;
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
-            padding: 40px;
-            max-width: 900px;
-            margin: auto;
+            background-color: #111;
+            color: #eee;
+            font-family: monospace;
+            padding: 20px;
         }
-        h2 {
-            color: #0ff;
-            font-size: 2em;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #00ff88;
-            padding-bottom: 12px;
-            text-align: center;
-            letter-spacing: 1.5px;
+        h1, h2, h3 {
+            color: #00ffcc;
         }
-        .onion-block {
-            background: #111;
-            border: 1px dashed #00ff88;
-            border-radius: 15px;
-            padding: 25px 30px;
-            margin-bottom: 35px;
-            box-shadow: 0 0 18px #00ff8855;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .onion-block:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 28px #00ffccaa;
-        }
-        strong {
-            color: #0ff;
-        }
-        code {
-            background: #002200;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 1em;
-            letter-spacing: 0.1em;
+        .onion-result {
+            border: 1px solid #444;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            background-color: #1a1a1a;
         }
         pre {
-            background: #002200;
-            border-radius: 10px;
-            padding: 15px 20px;
-            font-size: 0.9em;
-            line-height: 1.3em;
-            max-height: 220px;
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
             overflow-x: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-            color: #00ccff;
-            user-select: text;
-            margin-top: 10px;
-            font-family: monospace;
+        }
+        a {
+            color: #00ffcc;
+            text-decoration: none;
+            margin-left: 10px;
         }
         .error {
-            color: #ff5555;
-            font-weight: 700;
-            font-size: 1.1em;
-            margin-top: 10px;
+            color: red;
         }
-        ul {
-            margin-top: 15px;
-            padding-left: 20px;
-            list-style: none;
-        }
-        ul li {
-            margin-bottom: 8px;
-        }
-        ul li a {
-            color: #00ccff;
-            font-weight: 700;
-            text-decoration: none;
-            transition: color 0.15s ease;
-        }
-        ul li a:hover {
-            color: #ffff66;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 50px;
-            padding: 12px 28px;
-            background: #222;
-            border: 1px solid #00ff88;
-            border-radius: 12px;
-            color: #00ff88;
-            font-weight: 700;
-            text-decoration: none;
-            transition: background-color 0.25s ease, color 0.25s ease;
-            user-select: none;
-        }
-        .back-link:hover {
-            background: #00ff88;
-            color: #000;
-        }
-        .footer {
-            margin-top: 60px;
-            font-size: 0.85em;
-            color: #00ff8899;
-            text-align: center;
-            user-select: none;
+        .label {
+            color: #7fffd4;
         }
     </style>
 </head>
 <body>
-    <h1>📦 Résultats - Génération .onion par <span style="color:#0ff">trhacknon</span></h1>
+    <h1>📦 Résultats - Génération .onion par <strong>trhacknon</strong></h1>
 
-{% for prefix, result in results.items() %}
-  <div style="background:#111;padding:15px;border:1px solid #0ff;margin-bottom:20px;border-radius:10px;">
-    <h2>🎯 Préfixe : <code>{{ prefix }}</code></h2>
+    {% for result in results.values() %}
+        <div class="onion-result">
+            {% if result.error %}
+                <h2 class="error">❌ Erreur : {{ result.error }}</h2>
+            {% else %}
+                <h2>🎯 Domaine .onion : <span class="label">{{ result.onion }}.onion</span></h2>
 
-    {% if result.error %}
-      <p style="color:red;">❌ Erreur : {{ result.error }}</p>
-    {% else %}
-      <p>✅ Domaine .onion : <strong>{{ result.onion }}</strong></p>
+                <h3>📄 hostname :</h3>
+                <pre>
+{% if result.hostname_raw %}
+{{ result.hostname_raw }}
+{% else %}
+(base64)
+{{ result.hostname }}
+{% endif %}
+                </pre>
+                <a href="/download/{{ result.onion }}/hostname">⬇️ Télécharger hostname</a>
 
-      <h4>📄 hostname (contenu brut)</h4>
-      <pre>{{ result.hostname }}</pre>
-      <a href="/download/{{ result.folder }}/hostname">⬇️ Télécharger hostname</a>
+                <h3>🔑 Public Key :</h3>
+                <pre>
+{% if result.public_key_raw %}
+{{ result.public_key_raw }}
+{% elif result.public_key %}
+(base64)
+{{ result.public_key }}
+{% else %}
+Non disponible
+{% endif %}
+                </pre>
+                <a href="/download/{{ result.onion }}/hs_ed25519_public_key">⬇️ Télécharger public key</a>
 
-      <h4>🔑 Public Key (contenu brut)</h4>
-      <pre>{{ result.public_key }}</pre>
-      <a href="/download/{{ result.folder }}/hs_ed25519_public_key">⬇️ Télécharger public key</a>
-
-      <h4>🔐 Secret Key (base64)</h4>
-      <pre>{{ result.secret_key_b64 }}</pre>
-      <a href="/download/{{ result.folder }}/hs_ed25519_secret_key">⬇️ Télécharger secret key</a>
-    {% endif %}
-  </div>
-{% endfor %}
-    <a href="/" class="back-link">🔙 Retour</a>
-
-    <div class="footer">
-        Généré avec 💻 par <strong>trhacknon</strong> – usage éducatif uniquement.
-    </div>
+                <h3>🔐 Secret Key :</h3>
+                <pre>
+{% if result.secret_key_raw %}
+{{ result.secret_key_raw }}
+{% else %}
+(base64)
+{{ result.secret_key }}
+{% endif %}
+                </pre>
+                <a href="/download/{{ result.onion }}/hs_ed25519_secret_key">⬇️ Télécharger secret key</a>
+            {% endif %}
+        </div>
+    {% endfor %}
 </body>
 </html>
