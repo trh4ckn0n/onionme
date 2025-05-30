@@ -31,9 +31,6 @@
             text-decoration: none;
             margin-left: 10px;
         }
-        .error {
-            color: red;
-        }
         .label {
             color: #7fffd4;
         }
@@ -44,46 +41,19 @@
 
     {% for result in results.values() %}
         <div class="onion-result">
-            {% if result.error %}
-                <h2 class="error">❌ Erreur : {{ result.error }}</h2>
-            {% else %}
-                <h2>🎯 Domaine .onion : <span class="label">{{ result.onion }}.onion</span></h2>
+            <h2>🎯 Domaine .onion : <span class="label">{{ result.onion }}</span></h2>
 
-                <h3>📄 hostname :</h3>
-                <pre>
-{% if result.hostname_raw %}
-{{ result.hostname_raw }}
-{% else %}
-(base64)
-{{ result.hostname }}
-{% endif %}
-                </pre>
-                <a href="/download/{{ result.onion }}/hostname">⬇️ Télécharger hostname</a>
+            <h3>📄 hostname :</h3>
+            <pre>{{ result.hostname }}</pre>
+            <a href="/download/{{ result.folder }}/hostname">⬇️ Télécharger hostname</a>
 
-                <h3>🔑 Public Key :</h3>
-                <pre>
-{% if result.public_key_raw %}
-{{ result.public_key_raw }}
-{% elif result.public_key %}
-(base64)
-{{ result.public_key }}
-{% else %}
-Non disponible
-{% endif %}
-                </pre>
-                <a href="/download/{{ result.onion }}/hs_ed25519_public_key">⬇️ Télécharger public key</a>
+            <h3>🔑 Public Key :</h3>
+            <pre>{{ result.public_key }}</pre>
+            <a href="/download/{{ result.folder }}/hs_ed25519_public_key">⬇️ Télécharger public key</a>
 
-                <h3>🔐 Secret Key :</h3>
-                <pre>
-{% if result.secret_key_raw %}
-{{ result.secret_key_raw }}
-{% else %}
-(base64)
-{{ result.secret_key }}
-{% endif %}
-                </pre>
-                <a href="/download/{{ result.onion }}/hs_ed25519_secret_key">⬇️ Télécharger secret key</a>
-            {% endif %}
+            <h3>🔐 Secret Key :</h3>
+            <pre>{{ result.secret_key }}</pre>
+            <a href="/download/{{ result.folder }}/hs_ed25519_secret_key">⬇️ Télécharger secret key</a>
         </div>
     {% endfor %}
 </body>
