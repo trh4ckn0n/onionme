@@ -118,4 +118,21 @@
             {% if data.error %}
                 <p class="error">❌ Erreur : {{ data.error | safe }}</p>
             {% else %}
-                <p
+                <p><strong>✅ Domaine .onion :</strong> <code>{{ data.domain }}</code></p>
+                <p><strong>🕒 Temps :</strong> {{ data.time }} secondes</p>
+
+                {% if data.logs %}
+                    <p><strong>📜 Logs :</strong></p>
+                    <pre>{{ data.logs }}</pre>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <a href="/" class="back-link">🔙 Retour</a>
+
+    <div class="footer">
+        Généré avec 💻 par <strong>trhacknon</strong> – usage éducatif uniquement.
+    </div>
+</body>
+</html>
