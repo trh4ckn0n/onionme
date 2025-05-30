@@ -49,6 +49,25 @@
 
 ---
 
+## 🛠️ Dépendance externe requise : `oniongen-go`
+
+Ce projet utilise **[oniongen-go](https://github.com/trh4ckn0n/oniongen-go)** pour la génération rapide et efficace d'adresses `.onion` de type v3 avec préfixes personnalisés.
+
+### 🔗 Installation
+
+Assurez-vous d’avoir **Go** installé sur votre machine, puis exécutez :
+
+```bash
+git clone https://github.com/trh4ckn0n/oniongen-go.git
+cd oniongen-go
+go build -o oniongen
+sudo mv oniongen /usr/local/bin/
+```
+
+> ✅ Le binaire oniongen doit être accessible globalement (dans votre $PATH) pour que l'application Flask puisse l'utiliser automatiquement.
+
+---
+
 ## 📁 Arborescence du projet
 
 ```bash
