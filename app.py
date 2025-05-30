@@ -7,13 +7,19 @@ import base64
 app = Flask(__name__)
 results = {}
 
+def read_file(path):
+    try:
+        with open(path, "r") as f:
+            return f.read().strip()
+    except Exception:
+        return "Non disponible"
+
 def read_file_base64(path):
-    if os.path.exists(path):
+    try:
         with open(path, "rb") as f:
-            data = f.read()
-        return base64.b64encode(data).decode('ascii')
-    else:
-        return "Non trouvé"
+            return base64.b64encode(f.read()).decode("utf-8")
+    except Exception:
+        return "Non disponible"
 
 def generate_onion(prefix):
     try:
@@ -22,22 +28,16 @@ def generate_onion(prefix):
 
         if output:
             folder_name = output.split("\n")[0].strip()
-
             hostname_path = os.path.join(folder_name, "hostname")
             pubkey_path = os.path.join(folder_name, "hs_ed25519_public_key")
             seckey_path = os.path.join(folder_name, "hs_ed25519_secret_key")
 
-            # Lire l'adresse .onion
-            if os.path.exists(hostname_path):
-                with open(hostname_path, "r") as f:
-                    onion_domain = f.read().strip()
-            else:
-                onion_domain = "non trouvé"
+            onion_domain = read_file(hostname_path)
 
             results[prefix] = {
                 "onion": onion_domain,
-                "hostname_b64": read_file_base64(hostname_path),
-                "public_key_b64": read_file_base64(pubkey_path),
+                "hostname": onion_domain,
+                "public_key": read_file(pubkey_path),
                 "secret_key_b64": read_file_base64(seckey_path),
                 "folder": folder_name
             }
@@ -45,6 +45,7 @@ def generate_onion(prefix):
             results[prefix] = {"error": "Aucune adresse générée"}
     except Exception as e:
         results[prefix] = {"error": str(e)}
+        
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
