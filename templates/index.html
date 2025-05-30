@@ -1,100 +1,57 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <title>Génération .onion – trhacknon</title>
-    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/torbirdy.svg" />
+    <meta charset="UTF-8">
+    <title>Générateur de domaines .onion</title>
     <style>
         body {
-            background: #0b0b0b;
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-        form {
-            background: #111;
-            border: 1px solid #00ff88;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px #00ff8855;
-            width: 400px;
-        }
-        h1 {
-            color: #0ff;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 700;
-            color: #00ccaa;
+            background-color: #111;
+            color: #0f0;
+            font-family: monospace;
+            padding: 20px;
         }
         input[type="text"] {
-            width: 100%;
-            padding: 12px 10px;
-            font-size: 1.1em;
-            border-radius: 8px;
-            border: none;
-            outline: none;
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
             background: #222;
-            color: #00ff88;
-            font-family: monospace;
-            margin-bottom: 20px;
-            box-sizing: border-box;
+            color: #0f0;
+            border: 1px solid #0f0;
         }
         button {
-            width: 100%;
-            padding: 14px 0;
-            background: #00ff88;
+            background: #0f0;
+            color: #111;
             border: none;
-            color: #000;
-            font-weight: 700;
-            font-size: 1.2em;
-            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.2s ease;
         }
         button:hover {
-            background: #00cc55;
+            background: #0c0;
         }
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 0.85em;
-            color: #00ff8866;
-        }
-        .logo {
-            width: 80px;
-            margin-bottom: 20px;
-        }
-        .illustration {
-            width: 160px;
+        .warning {
+            background: #222;
+            border-left: 4px solid #f00;
+            padding: 10px;
             margin-top: 20px;
-            opacity: 0.7;
+            color: #f55;
+        }
+        a {
+            color: #0ff;
         }
     </style>
 </head>
 <body>
-    <img class="logo" src="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/purple.svg" alt="Logo Tor" />
-    <form method="post" action="/generate">
-        <h1>Génération .onion <span style="color:#0ff;">trhacknon</span></h1>
-        <label for="prefix">Préfixes à générer (séparés par espace) :</label>
-        <input type="text" id="prefix" name="prefix" placeholder="ex: trkn abc def" required autofocus />
-
+    <h1>🌐 Générateur de domaines .onion</h1>
+    <form method="POST" action="/generate">
+        <label for="prefix">Préfixe(s) (séparés par un espace) :</label><br>
+        <input type="text" name="prefix" id="prefix" placeholder="ex: trhacknon " required>
+        <br>
         <button type="submit">Générer</button>
-
-        <div class="footer">
-            🔒 Propulsé par <span style="color:#0ff;">trhacknon</span> – Usage pédagogique uniquement.
-        </div>
     </form>
-    <img class="illustration" src="https://raw.githubusercontent.com/trh4ckn0n/onionme/refs/heads/main/static/torbirdy.svg" alt="Illustration Tor" />
+
+    <div class="warning">
+        ⚠️ Ce projet nécessite <strong><a href="https://github.com/trh4ckn0n/oniongen-go" target="_blank">oniongen-go</a></strong> pour générer des domaines Tor v3 valides (56 caractères).
+    </div>
 </body>
 </html>
