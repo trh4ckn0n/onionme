@@ -109,25 +109,31 @@
     </style>
 </head>
 <body>
-    <h2>📦 Résultats - Génération .onion par <span style="color:#0ff;">trhacknon</span></h2>
+    <h1>📦 Résultats - Génération .onion par <span style="color:#0ff">trhacknon</span></h1>
 
-    {% for prefix, data in results.items() %}
-        <div class="onion-block">
-            <p><strong>🎯 Préfixe :</strong> <code>{{ prefix }}</code></p>
+{% for prefix, result in results.items() %}
+  <div style="background:#111;padding:15px;border:1px solid #0ff;margin-bottom:20px;border-radius:10px;">
+    <h2>🎯 Préfixe : <code>{{ prefix }}</code></h2>
 
-            {% if data.error %}
-                <p class="error">❌ Erreur : {{ data.error | safe }}</p>
-            {% else %}
-                <p><strong>✅ Domaine .onion :</strong> <code>{{ data.domain }}</code></p>
-                <p><strong>🕒 Temps :</strong> {{ data.time }} secondes</p>
+    {% if result.error %}
+      <p style="color:red;">❌ Erreur : {{ result.error }}</p>
+    {% else %}
+      <p>✅ Domaine .onion : <strong>{{ result.onion }}</strong></p>
 
-                {% if data.logs %}
-                    <p><strong>📜 Logs :</strong></p>
-                    <pre>{{ data.logs }}</pre>
-                {% endif %}
-            {% endif %}
-        </div>
-    {% endfor %}
+      <h4>📄 hostname (base64)</h4>
+      <pre>{{ result.hostname_b64 }}</pre>
+      <a href="/download/{{ result.folder }}/hostname" class="btn">⬇️ Télécharger hostname</a>
+
+      <h4>🔑 Public Key (base64)</h4>
+      <pre>{{ result.public_key_b64 }}</pre>
+      <a href="/download/{{ result.folder }}/hs_ed25519_public_key" class="btn">⬇️ Télécharger public key</a>
+
+      <h4>🔐 Secret Key (base64)</h4>
+      <pre>{{ result.secret_key_b64 }}</pre>
+      <a href="/download/{{ result.folder }}/hs_ed25519_secret_key" class="btn">⬇️ Télécharger secret key</a>
+    {% endif %}
+  </div>
+{% endfor %}
 
     <a href="/" class="back-link">🔙 Retour</a>
 
